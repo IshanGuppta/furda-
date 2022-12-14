@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+	body {background-color:  cyan;
+  }
+
+h1   {color: black; font-family: Arial, Helvetica, sans-serif; font-weight: lighter; }
+h2   {color: black; font-family: Arial, Helvetica, sans-serif; font-weight: lighter; }
+.addDate {
+  position: absolute;
+  left:  340px;
+  padding: 10px;
+  border:  none;
+  border-radius: 10px;
+}
+.addDate:hover {
+  background:  darkgrey;
+  transition: 0.3s;
+}
+.signUp {
+  position: absolute;
+  left:  5px;
+  padding: 10px;
+  border:  none;
+  border-radius: 10px;
+}
+.signUp:hover {
+  background:  darkgrey;
+  transition: 0.3s;
+}
+textarea {
+  position: absolute;
+  top: 180px;
+  background: transparent;
+  color: black;
+  border: cyan;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+  }
+  
+     
+.logIn {
+  position:  absolute;
+  left:  80px;
+  margin: auto;
+  padding: 10px;
+  border:  none;
+  border-radius: 10px;
+}
+.logIn:hover {
+  background: darkgrey;
+  transition:  0.3s;
+}
+.hideText{
+  position:  absolute;
+  left: 255px;
+  padding: 10px;
+  border:  none;
+  border-radius: 10px;
+
+}
+.hideText:hover {
+  background:  darkgrey;
+  transition: 0.3s;
+}
+.beginBlogging{
+  position:  absolute;
+  left: 145px;
+  padding: 10px;
+  border:  none;
+  border-radius: 10px;
+
+}
+.beginBlogging:hover {
+  background: darkgrey;
+  transition:  0.3s;
+}
+
+	</style>
+	<title>furda :)</title>
+	<h1 autofocus>on experiential programming</h1>
+	<h2 autofocus> furda :)</h2>
+	<link rel="stylesheet" href="firstWebsite.css">
+	</head>
+	<body>
+		<div id="result"></div>
+		<button id = "signUp" onclick = "function" class = "signUp">Sign Up</button>
+		<button id="logIn" onclick="function"  class = "logIn">Log In</button>
+		<button id = "beginBlogging" onclick = "function" class = "beginBlogging">Begin Writing</button>		
+		<button id="hideText" onclick="function"  class = "hideText" disabled>Hide Text</button>		
+		<button id="addDate" onclick="function"  class = "addDate" disabled>Add Date</button>
+
+		<script>
+	
+			const date = new Date();
+			const usernames = ["ishan", "john", "bob"]
+			currUser = "";
+			const passwords = ["1qaz@WSX", "john", "bob"]
+			document.getElementById("beginBlogging").disabled = true;
+			var refresh = function(){
+			setInterval(oneSecondFunction, 1000);
+			};
+			refresh();
+			
+			function oneSecondFunction() {
+			if (document.getElementById("beginBlogging").disabled == true)
+			{
+				location.reload();
+			}
+			}
+
+			
+			signUp.onclick = function(){
+				var newUsername = prompt("Enter new username")
+				if (usernames.includes(newUsername) || newUsername == null)
+					alert("Sorry, this username is already in use, try logging in instead.")
+				else
+				{
+					var newPassword = prompt("Enter password")
+					if (newPassword == null)
+						alert("Password must be at least one character, try again.")
+					else
+					{
+						usernames.push(newUsername);
+						passwords.push(newPassword);
+						localStorage.setItem("usernames", usernames);
+						localStorage.setItem("passwords", passwords);
+						alert("Success! You can begin writing now!")
+					}
+				}
+				
+				
+				
+			}
+
+			
+			var useArr = localStorage.getItem("usernames").split(',');
+			var passArr = localStorage.getItem("passwords").split(',');
+			
+
+			logIn.onclick = function()
+			{
+				
+				var username = prompt("Enter username here")
+				if (localStorage.getItem("usernames").includes(username))
+				{
+					var index = useArr.indexOf(username)
+					
+					var password = prompt("Welcome back " + username + "! Please enter your password")
+					var bool = passArr.indexOf(password) == index;
+					console.log(bool)
+					console.log(passArr.indexOf(password))
+					console.log(index)
+					
+
+					if (localStorage.getItem("passwords").includes(password) && passArr.indexOf(password) == index)
+					{
+						currUser = localStorage.getItem("usernames")[localStorage.getItem("usernames").indexOf(username)];
+
+						console.log("W")
+						document.getElementById("beginBlogging").disabled = false;
+						document.getElementById("logOut").disabled = false;
+						document.getElementById("signUp").disabled = true;
+						document.getElementById("logIn").disabled = true;
+						
+
+						console.log("WW");
+					}
+					else
+					{
+						alert("Incorrect password entered")
+					}
+				}
+				else
+				{
+					alert("Sorry, incorrect username entered. Please try again or click the sign up button.")
+				}
+
+			return usernames;	
+			};
+
+
+
+
+
+
+			beginBlogging.onclick = function()
+			{
+
+				
+				//Curr user is defined
+				const input = document.createElement("textarea");
+				input.setAttribute("placeholder", "Press escape when finished");
+				document.getElementById("hideText").disabled = false;
+				document.getElementById("addDate").disabled = false;
+				addDate.onclick = function(){
+					input.value += date;
+				}
+				hideText.onclick = function(){
+				input.style.color = "transparent";
+				}
+				input.style.height="10000px";
+				input.style.width="1425px";
+				input.style.fontSize="5px";
+				input.style.fontColor="White";
+				document.body.appendChild(input, id="input")
+				
+				//localStorage.removeItem("inputValue")
+				input.value = localStorage.getItem(`${currUser}inputValue`)
+				input.addEventListener("keydown", (event) =>{
+					if (event.key == 'Escape')
+					{
+						event.preventDefault();
+						var endEarly = prompt("If you would like to continue, please type 'continue'. Otherwise, press enter.")
+						if (endEarly != 'continue')
+						{
+							input.disabled = true;
+							document.getElementById("hideText").disabled = true;
+							document.getElementById("addDate").disabled = true;
+							localStorage.setItem(`${currUser}inputValue`, input.value);
+							
+							input.remove()
+							location.reload();
+						}
+
+					}
+				})
+
+
+			}
+
+			
+
+			
+
+			
+
+		</script>	
+</body>
+
+</html>
